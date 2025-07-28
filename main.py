@@ -1,4 +1,4 @@
-import os, logging, discord
+import os, logging, discord, asyncio, logging
 from discord.ext import commands
 from discord import app_commands, Embed
 from dotenv import load_dotenv
@@ -28,9 +28,16 @@ async def ping(interaction: discord.Interaction):
 
 @bot.tree.command(name="info", description="WonderFlix service status")
 async def info(interaction: discord.Interaction):
-    embed = Embed(title="WonderFlix", description="Bot operational 🚀", color=0x00ff00)
+    embed = Embed(title="WonderFlix", description="Bot operational 🚀", color=0xcfa146)
     await interaction.response.send_message(embed=embed)
 
+async def main():
+    # carica l’extension notifications.py
+    await bot.load_extension("notifications")        # stesso path del file
+    await bot.load_extension("mapuser")
+    await bot.start(os.getenv("DISCORD_TOKEN"))
+
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    bot.run(TOKEN)
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s [%(levelname)s] %(message)s")
+    asyncio.run(main())

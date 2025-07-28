@@ -1,0 +1,11 @@
+{
+  "Event": "ItemAdded",
+  "Item": {
+    "Name": "Test Movie",
+    "Type": "Movie",
+    "ProviderIds": { "Tmdb": "603" }
+  },
+  "User": {
+    "Name": "davide.sidoti"
+  }
+}
