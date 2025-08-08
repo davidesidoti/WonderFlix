@@ -101,8 +101,16 @@ class Notifications(commands.Cog):
             return web.Response(text="Ignored")
 
         item = payload.get("Item", {})
-        user_field = payload.get("User", {})
-        jelly_user = user_field.lower() if isinstance(user_field, str) else str(user_field.get("Name", "")).lower()
+        # Some Jellyfin payloads may omit "User" or set it to null. In those cases
+        # payload.get("User") returns None and accessing ``get`` would raise an
+        # AttributeError. Normalise the value to an empty dict to avoid crashes
+        # when building the embed.
+        user_field = payload.get("User") or {}
+        jelly_user = (
+            user_field.lower()
+            if isinstance(user_field, str)
+            else str(user_field.get("Name", "")).lower()
+        )
 
         title = item.get("Name")
         media_type = item.get("Type")
